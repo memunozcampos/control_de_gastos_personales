@@ -1,122 +1,143 @@
+// El código de las vistas está hardcodeado para mostrar datos ficticios de gastos.
 import 'package:flutter/material.dart';
+import '/modelos/gastos.dart';
+import '/servicios/gestion_gastos.dart';
+import '/vistas/agregar_gasto.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _insertarDatosFicticios(); // Insertar datos al iniciar
+  runApp(MyApp());
+}
+
+// Función para agregar gastos de prueba
+Future<void> _insertarDatosFicticios() async {
+  final gestor = GestorGastos();
+  final List<Gasto> gastos = [
+    Gasto(
+      descripcion: "Cena en restaurante",
+      categoria: "Alimentación",
+      monto: 45.75,
+      fecha: DateTime(2023, 10, 20),
+    ),
+    Gasto(
+      descripcion: "Gasolina",
+      categoria: "Transporte",
+      monto: 30.00,
+      fecha: DateTime(2023, 10, 21),
+    ),
+  ];
+
+  for (var gasto in gastos) {
+    await gestor.insertarGasto(gasto);
+  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page.'),
+      title: 'Control de Gastos',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: PantallaInicio(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class PantallaInicio extends StatefulWidget {
+  const PantallaInicio({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  // ignore: library_private_types_in_public_api
+  _PantallaInicioState createState() => _PantallaInicioState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _PantallaInicioState extends State<PantallaInicio> {
+  final GestorGastos _gestor = GestorGastos();
+  List<Gasto> _gastos = [];
+  double _totalGastos = 0.0;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _cargarGastos();
+  }
+
+  Future<void> _cargarGastos() async {
+    final gastos = await _gestor.obtenerGastos();
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _gastos = gastos;
+      _totalGastos = _calcularTotal(gastos);
     });
+  }
+
+  double _calcularTotal(List<Gasto> gastos) {
+    return gastos.fold(0.0, (sum, gasto) => sum + gasto.monto);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      appBar: AppBar(title: const Text('Mis Gastos')),
+      body: Column(
+        children: [
+          // Widget de Resumen
+          _ResumenGastos(total: _totalGastos),
+          // Lista de Gastos
+          Expanded(
+            child: ListView.builder(
+              itemCount: _gastos.length,
+              itemBuilder: (context, index) {
+                final gasto = _gastos[index];
+                return ListTile(
+                  title: Text(gasto.descripcion),
+                  subtitle: Text(
+                    '${gasto.categoria} - ${gasto.fecha.toString().substring(0, 10)}',
+                  ),
+                  trailing: Text('\$${gasto.monto.toStringAsFixed(2)}'),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: Icon(Icons.add),
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => PantallaAgregarGasto()),
+          );
+          _cargarGastos(); // Actualizar lista al regresar
+        },
+      ),
+    );
+  }
+}
+
+// Widget para mostrar el resumen de gastos
+class _ResumenGastos extends StatelessWidget {
+  final double total;
+
+  const _ResumenGastos({required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      color: Colors.blue[50],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Total Gastado:', style: TextStyle(fontSize: 18)),
+          Text(
+            '\$${total.toStringAsFixed(2)}',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
     );
   }
 }
