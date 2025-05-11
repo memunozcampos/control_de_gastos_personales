@@ -1,5 +1,5 @@
-name: control_de_gastos_personales
-description: "A new Flutter project."
+name: "control_de_gastos_personales"
+description: "Proyecto creado para la asignatura Desarrollo de Aplicaciones Móviles."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   sqflite: ^2.3.0
   path: ^1.8.3
+  sqflite_common_ffi: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -47,6 +48,38 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  
+  #  The following adds the Flutter Launcher Icons package to your application.
+  flutter_launcher_icons: "^0.14.3"
+
+
+
+# The following section adds the Flutter Launcher Icons package to your application.
+# The default icon is located at "imagenes/icon_control_gastos_personales.png" and the default
+# Android icon name is "launcher_icon".
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "imagenes/icon_control_gastos_personales.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "imagenes/icon_control_gastos_personales.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  windows:
+    generate: true
+    image_path: "imagenes/icon_control_gastos_personales.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "imagenes/icon_control_gastos_personales.png"
+    icon_size: 128 # min:128, max:512, default: 128
+
+
+flutter_launcher_name:
+  name: "Control de Gastos Personales"
+  description: "Proyecto creado para la asignatura Desarrollo de Aplicaciones Móviles."
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

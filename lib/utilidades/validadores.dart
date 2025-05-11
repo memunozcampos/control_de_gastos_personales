@@ -1,7 +1,7 @@
 // 1. Valida que los campos obligatorios no estén vacíos (excepto id)
-String? validarCampoNoVacio(String? valor, [String campo = 'Este campo']) {
+String? validarCampoNoVacio(String? valor, [String campo = 'Este']) {
   if (valor == null || valor.trim().isEmpty) {
-    return '$campo es obligatorio';
+    return '$campo es un campo obligatorio';
   }
   return null;
 }
