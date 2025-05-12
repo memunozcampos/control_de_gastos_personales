@@ -8,7 +8,8 @@ class GestorGastos {
   // Insertar un gasto
   Future<int> insertarGasto(Gasto gasto) async {
     final Database bd = await _gestorBD.bd;
-    return await bd.insert('gastos', gasto.convertirAMap());
+    final int id = await bd.insert('gastos', gasto.convertirAMap());
+    return id;
   }
 
   // Obtener todos los gastos
@@ -21,17 +22,23 @@ class GestorGastos {
   // Actualizar un gasto por ID
   Future<int> actualizarGasto(Gasto gasto) async {
     final Database bd = await _gestorBD.bd;
-    return await bd.update(
+    final int numeroDeFilasAfectadas = await bd.update(
       'gastos',
       gasto.convertirAMap(),
       where: 'id = ?',
       whereArgs: [gasto.id],
     );
+    return numeroDeFilasAfectadas;
   }
 
   // Eliminar un gasto por ID
   Future<int> eliminarGasto(int id) async {
     final Database bd = await _gestorBD.bd;
-    return await bd.delete('gastos', where: 'id = ?', whereArgs: [id]);
+    final int numeroDeFilasAfectadas = await bd.delete(
+      'gastos',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return numeroDeFilasAfectadas;
   }
 }

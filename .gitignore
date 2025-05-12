@@ -43,3 +43,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/app/intermediates
+/android/app/outputs
+
+# VS Code related
+.vscode
+
+# Git related
+.gitattributes
+
+# Metadata related
+.metadata
+
+pubspec.lock

@@ -15,7 +15,10 @@ class GestorBaseDeDatos {
   }
 
   Future<Database> _inicializarBD() async {
-    final rutaBD = join(await getDatabasesPath(), 'gastos.db');
+    final rutaBD = join(
+      await getDatabasesPath(),
+      'control_gastos_personales.db',
+    );
     return openDatabase(rutaBD, version: 1, onCreate: _crearTablas);
   }
 

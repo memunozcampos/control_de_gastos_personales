@@ -34,8 +34,4 @@ class Gasto {
       fecha: DateTime.parse(mapa['fecha']),
     );
   }
-
-  String mostrarGasto() {
-    return 'Gasto(id: $id, categoria: $categoria, descripcion: $descripcion, fecha: ${fecha.toIso8601String()}, monto: $monto)';
-  }
 }

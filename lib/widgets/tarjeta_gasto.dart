@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import '../modelos/gastos.dart';
 import '../servicios/gestion_gastos.dart';
-import '../vistas/pantalla_gasto.dart'; // Asegúrate de que la ruta sea correcta
+import '../vistas/pantalla_gasto.dart';
 import 'dialogo_confirmacion.dart'; // Ruta hacia el widget de confirmación
 
 class TarjetaGasto extends StatelessWidget {
   final Gasto gasto;
-  final Function actualizadorDeEstado;
+  final VoidCallback actualizadorDeEstado;
 
   // ignore: use_super_parameters
   const TarjetaGasto({

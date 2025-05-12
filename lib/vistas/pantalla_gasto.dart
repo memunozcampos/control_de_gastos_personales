@@ -8,7 +8,7 @@ import '../utilidades/validadores.dart';
 import '../widgets/dialogo_confirmacion.dart';
 
 class PantallaGasto extends StatefulWidget {
-  final Gasto? gasto; // Si es null, se trata de un nuevo gasto
+  final Gasto? gasto;
   final Function actualizadorDeEstado;
 
   // ignore: use_super_parameters
@@ -85,7 +85,7 @@ class _PantallaGastoState extends State<PantallaGasto> {
   }
 
   Future<void> _eliminarGasto() async {
-    final confirmacion = await showDialog<bool>(
+    await showDialog<bool>(
       context: context,
       builder:
           (context) => DialogoConfirmacion(
@@ -99,9 +99,6 @@ class _PantallaGastoState extends State<PantallaGasto> {
             },
           ),
     );
-    if (confirmacion == true) {
-      // Otra acción si es necesario
-    }
   }
 
   @override
