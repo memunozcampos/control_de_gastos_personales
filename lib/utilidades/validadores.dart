@@ -28,7 +28,7 @@ String? validarMonto(String? valor) {
 }
 
 // 3. Valida que la fecha no sea futura
-String? validarFechaNoFutura(DateTime? fecha) {
+String? validarFecha(DateTime? fecha) {
   if (fecha == null) {
     return 'Seleccione una fecha';
   }

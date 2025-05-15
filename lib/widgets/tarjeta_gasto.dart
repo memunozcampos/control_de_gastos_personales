@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import '../modelos/gastos.dart';
 import '../servicios/gestion_gastos.dart';
+import '../utilidades/constantes.dart';
 import '../vistas/pantalla_gasto.dart';
-import 'dialogo_confirmacion.dart'; // Ruta hacia el widget de confirmación
+import 'dialogo_detalle_gasto.dart';
+import 'dialogo_confirmar_eliminacion.dart'; // Ruta hacia el widget de confirmación
 
 class TarjetaGasto extends StatelessWidget {
   final Gasto gasto;
@@ -18,14 +20,15 @@ class TarjetaGasto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+
     return Dismissible(
-      key: UniqueKey(), // Asegúrate de usar un identificador único
+      key: UniqueKey(),
       direction:
           DismissDirection.startToEnd, // Permite deslizar hacia la derecha
       background: Container(
         color: Colors.red,
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 16.0),
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       confirmDismiss: (direction) async {
@@ -36,43 +39,22 @@ class TarjetaGasto extends StatelessWidget {
               (context) => DialogoConfirmacion(
                 titulo: 'Confirmar Eliminación',
                 mensaje: '¿Estás seguro de eliminar este gasto?',
-                onConfirmar: () {
-                  // Aquí se podría dejar vacío o ejecutar algo opcional,
-                  // ya que la eliminación se realizará en onDismissed
-                },
               ),
         );
         return confirmacion ?? false;
       },
       onDismissed: (direction) {
         GestorGastos().eliminarGasto(gasto.id!);
-        actualizadorDeEstado(); // Actualiza la lista de gastos
-        // Además, notifica al usuario o refresca la lista según tu implementación.
+        actualizadorDeEstado();
       },
       child: GestureDetector(
         onTap: () {
-          // Muestra un diálogo con más detalles del gasto
           showDialog(
             context: context,
             builder:
-                (context) => AlertDialog(
-                  title: const Text("Detalles del Gasto"),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Descripción: ${gasto.descripcion}"),
-                      Text("Fecha: ${gasto.fecha.toString().substring(0, 10)}"),
-                      Text("Monto: \$${gasto.monto.toStringAsFixed(2)}"),
-                      // Puedes agregar más detalles aquí
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text("Cerrar"),
-                    ),
-                  ],
+                (context) => DetalleGasto(
+                  gasto: gasto,
+                  actualizadorDeEstado: actualizadorDeEstado,
                 ),
           );
         },
@@ -93,8 +75,20 @@ class TarjetaGasto extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
             title: Text(gasto.descripcion),
-            subtitle: Text(gasto.fecha.toString().substring(0, 10)),
-            trailing: Text("\$${gasto.monto.toStringAsFixed(2)}"),
+            leading: CircleAvatar(
+              backgroundColor: tema.colorScheme.primary,
+              child: Icon(
+                iconosCategorias[gasto.categoria.toString()] ?? Icons.error,
+                color: tema.colorScheme.onPrimary,
+              ),
+            ),
+            //subtitle: Text(gasto.fecha.toString().substring(0, 10)),
+            trailing: Text(
+              "\$${gasto.monto.toStringAsFixed(2)}",
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+              ),
+            ),
           ),
         ),
       ),

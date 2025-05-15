@@ -15,7 +15,10 @@ class GestorGastos {
   // Obtener todos los gastos
   Future<List<Gasto>> obtenerGastos() async {
     final Database bd = await _gestorBD.bd;
-    final List<Map<String, dynamic>> registros = await bd.query('gastos');
+    final List<Map<String, dynamic>> registros = await bd.query(
+      'gastos',
+      orderBy: 'fecha DESC',
+    );
     return registros.map((mapa) => Gasto.convertirDesdeMap(mapa)).toList();
   }
 

@@ -4,6 +4,7 @@ import '../modelos/gastos.dart';
 import '../servicios/gestion_gastos.dart';
 import '../widgets/lista_gastos.dart';
 import '../widgets/resumen_de_gastos.dart';
+import '../widgets/icono_selector_tema.dart';
 
 class PantallaInicio extends StatefulWidget {
   const PantallaInicio({super.key});
@@ -16,7 +17,6 @@ class PantallaInicio extends StatefulWidget {
 class _PantallaInicioState extends State<PantallaInicio> {
   final GestorGastos _gestor = GestorGastos();
   List<Gasto> _gastos = [];
-  double _totalGastos = 0.0;
 
   @override
   void initState() {
@@ -28,22 +28,20 @@ class _PantallaInicioState extends State<PantallaInicio> {
     final gastos = await _gestor.obtenerGastos();
     setState(() {
       _gastos = gastos;
-      _totalGastos = _calcularTotal(gastos);
     });
-  }
-
-  double _calcularTotal(List<Gasto> gastos) {
-    return gastos.fold(0.0, (sum, gasto) => sum + gasto.monto);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mis Gastos')),
+      appBar: AppBar(
+        title: const Text('Mis Gastos'),
+        actions: [IconoSelectorTema()],
+      ),
       body: Column(
         children: [
           // Widget de Resumen
-          ResumenDeGastos(totalGastos: _totalGastos),
+          ResumenDeGastos(gastos: _gastos),
           // Lista de Gastos
           Expanded(
             child: ListaGastos(

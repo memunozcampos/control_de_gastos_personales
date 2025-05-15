@@ -15,14 +15,46 @@ class ListaGastos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: gastos.length,
-      itemBuilder: (context, index) {
-        return TarjetaGasto(
-          gasto: gastos[index],
-          actualizadorDeEstado: actualizadorDeEstado,
-        );
-      },
+    return Stack(
+      children: [
+        ListView.builder(
+          padding: const EdgeInsets.only(
+            top: 50,
+          ), // Ajusta según altura del título
+          itemCount: gastos.length,
+          itemBuilder: (context, index) {
+            return TarjetaGasto(
+              gasto: gastos[index],
+              actualizadorDeEstado: actualizadorDeEstado,
+            );
+          },
+        ),
+
+        // Título flotante
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(20),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Detalle de Gastos',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

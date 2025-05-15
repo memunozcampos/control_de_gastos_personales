@@ -1,17 +1,17 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, use_super_parameters
 
 import 'package:flutter/material.dart';
 import '../modelos/gastos.dart';
 import '../servicios/gestion_gastos.dart';
 import '../utilidades/constantes.dart';
 import '../utilidades/validadores.dart';
-import '../widgets/dialogo_confirmacion.dart';
+import '../widgets/dialogo_confirmar_eliminacion.dart';
+import '../widgets/icono_selector_tema.dart';
 
 class PantallaGasto extends StatefulWidget {
   final Gasto? gasto;
   final Function actualizadorDeEstado;
 
-  // ignore: use_super_parameters
   const PantallaGasto({
     Key? key,
     this.gasto,
@@ -19,28 +19,33 @@ class PantallaGasto extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _PantallaGastoState createState() => _PantallaGastoState();
+  _EstadoPantallaGasto createState() => _EstadoPantallaGasto();
 }
 
-class _PantallaGastoState extends State<PantallaGasto> {
+class _EstadoPantallaGasto extends State<PantallaGasto> {
   final _formKey = GlobalKey<FormState>();
   final _descripcionController = TextEditingController();
   final _montoController = TextEditingController();
-  final _categorias = categoriasGastos;
-  String _categoriaSeleccionada = categoriasGastos[0];
+  final _categorias = iconosCategorias.keys.toList();
+  String _categoriaSeleccionada = iconosCategorias.keys.toList()[0];
   DateTime? _fechaSeleccionada;
 
   @override
   void initState() {
     super.initState();
-    // Si se está editando un gasto, inicializa los campos con sus datos
     if (widget.gasto != null) {
       _descripcionController.text = widget.gasto!.descripcion;
       _montoController.text = widget.gasto!.monto.toString();
       _categoriaSeleccionada = widget.gasto!.categoria;
       _fechaSeleccionada = widget.gasto!.fecha;
     }
+  }
+
+  @override
+  void dispose() {
+    _descripcionController.dispose();
+    _montoController.dispose();
+    super.dispose();
   }
 
   Future<void> _seleccionarFecha(BuildContext context) async {
@@ -58,8 +63,9 @@ class _PantallaGastoState extends State<PantallaGasto> {
   }
 
   Future<void> _guardarGasto() async {
-    if (_formKey.currentState!.validate() && _fechaSeleccionada != null) {
-      // Si el gasto es nulo => agregar, sino actualizar
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
       if (widget.gasto == null) {
         final nuevoGasto = Gasto(
           descripcion: _descripcionController.text,
@@ -68,6 +74,15 @@ class _PantallaGastoState extends State<PantallaGasto> {
           fecha: _fechaSeleccionada!,
         );
         await GestorGastos().insertarGasto(nuevoGasto);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Gasto agregado con éxito',
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
       } else {
         final gastoActualizado = Gasto(
           id: widget.gasto!.id,
@@ -77,101 +92,167 @@ class _PantallaGastoState extends State<PantallaGasto> {
           fecha: _fechaSeleccionada!,
         );
         await GestorGastos().actualizarGasto(gastoActualizado);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Gasto actualizado con éxito',
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
       }
-      // Regresa a la pantalla anterior
+      widget.actualizadorDeEstado();
       Navigator.pop(context);
-      await widget.actualizadorDeEstado();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'No se pudo guardar el gasto. Verifica los campos.',
+            style: TextStyle(color: Theme.of(context).colorScheme.onError),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
     }
   }
 
   Future<void> _eliminarGasto() async {
-    await showDialog<bool>(
+    // El DialogoConfirmacion debería heredar estilos del dialogTheme
+    final confirmaEliminacion = await showDialog<bool>(
       context: context,
       builder:
           (context) => DialogoConfirmacion(
+            // Asumiendo que DialogoConfirmacion usa botones que heredan el tema
             titulo: 'Confirmar Eliminación',
             mensaje: '¿Estás seguro de eliminar este gasto?',
-            onConfirmar: () async {
-              await GestorGastos().eliminarGasto(widget.gasto!.id!);
-              Navigator.pop(context); // Cerrar la pantalla de edición
-              await widget
-                  .actualizadorDeEstado(); // Actualiza la lista de gastos
-            },
           ),
     );
+    if (confirmaEliminacion == true &&
+        widget.gasto != null &&
+        widget.gasto!.id != null) {
+      await GestorGastos().eliminarGasto(widget.gasto!.id!);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Gasto eliminado',
+            style: TextStyle(color: Theme.of(context).colorScheme.onError),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      widget.actualizadorDeEstado(); // Llama para actualizar la lista
+      Navigator.pop(context); // Regresa a la pantalla anterior
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.gasto == null ? 'Agregar Gasto' : 'Editar Gasto'),
         actions: [
-          // Muestra el botón de eliminar solo si se está editando un gasto existente
-          if (widget.gasto != null)
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: _eliminarGasto,
-            ),
-          IconButton(icon: const Icon(Icons.save), onPressed: _guardarGasto),
+          IconoSelectorTema(), // Icono para cambiar el tema
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Campo: Descripción
-                TextFormField(
-                  controller: _descripcionController,
-                  decoration: const InputDecoration(labelText: 'Descripción'),
-                  validator:
-                      (valor) => validarCampoNoVacio(valor, 'la descripción'),
-                ),
-                // Campo: Categoría
-                DropdownButtonFormField<String>(
-                  value: _categoriaSeleccionada,
-                  items:
-                      _categorias.map((categoria) {
-                        return DropdownMenuItem(
-                          value: categoria,
-                          child: Text(categoria),
-                        );
-                      }).toList(),
-                  onChanged:
-                      (valor) =>
-                          setState(() => _categoriaSeleccionada = valor!),
-                  decoration: const InputDecoration(labelText: 'Categoría'),
-                ),
-                // Campo: Monto
-                TextFormField(
-                  controller: _montoController,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          // Añade padding general al contenido del formulario
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _descripcionController,
+                decoration: InputDecoration(
+                  labelText: 'Descripción',
+                  prefixIcon: Icon(
+                    Icons.description,
+                    color: tema.colorScheme.secondary,
                   ),
-                  decoration: const InputDecoration(labelText: 'Monto'),
-                  validator: validarMonto,
                 ),
-                // Campo: Fecha
-                TextFormField(
-                  readOnly: true,
-                  onTap: () => _seleccionarFecha(context),
-                  decoration: InputDecoration(
-                    labelText: 'Fecha',
-                    suffixIcon: const Icon(Icons.calendar_today),
+                validator:
+                    (valor) => validarCampoNoVacio(valor, 'La descripción'),
+                textCapitalization: TextCapitalization.sentences,
+              ),
+              const SizedBox(height: 16.0),
+              DropdownButtonFormField<String>(
+                value: _categoriaSeleccionada,
+                items:
+                    _categorias.map((categoria) {
+                      return DropdownMenuItem(
+                        value: categoria,
+                        child: Text(categoria),
+                      );
+                    }).toList(),
+                onChanged:
+                    (valor) => setState(() => _categoriaSeleccionada = valor!),
+                decoration: InputDecoration(
+                  labelText: 'Categoría',
+                  prefixIcon: Icon(
+                    Icons.category,
+                    color: tema.colorScheme.secondary,
                   ),
-                  controller: TextEditingController(
-                    text:
-                        _fechaSeleccionada != null
-                            ? _fechaSeleccionada!.toString().substring(0, 10)
-                            : 'Seleccionar fecha',
-                  ),
-                  validator: (_) => validarFechaNoFutura(_fechaSeleccionada),
                 ),
-              ],
-            ),
+                validator:
+                    (valor) => validarCampoNoVacio(valor, 'La categoría'),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _montoController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'Monto',
+                  prefixIcon: Icon(
+                    Icons.attach_money,
+                    color: tema.colorScheme.secondary,
+                  ),
+                ),
+                validator: validarMonto,
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                readOnly: true,
+                onTap: () => _seleccionarFecha(context),
+                decoration: InputDecoration(
+                  labelText: 'Fecha',
+                  hintText: 'Seleccionar fecha',
+                  prefixIcon: Icon(
+                    Icons.calendar_today,
+                    color: tema.colorScheme.secondary,
+                  ),
+                ),
+                controller: TextEditingController(
+                  text:
+                      _fechaSeleccionada != null
+                          ? "${_fechaSeleccionada!.day}/${_fechaSeleccionada!.month}/${_fechaSeleccionada!.year}" // Formato dd/MM/yyyy
+                          : '',
+                ),
+                validator: (_) => validarFecha(_fechaSeleccionada),
+              ),
+              const SizedBox(height: 32.0),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.save_alt_outlined),
+                label: Text(
+                  widget.gasto == null ? 'Agregar Gasto' : 'Guardar Cambios',
+                ),
+                onPressed: _guardarGasto,
+                //style: ElevatedButton.styleFrom(backgroundColor: tema.colorScheme.secondary,),
+              ),
+              const SizedBox(height: 16.0),
+              if (widget.gasto != null)
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.delete_forever_outlined),
+                  label: Text("Eliminar Gasto"),
+                  onPressed: _eliminarGasto,
+                  //style: ElevatedButton.styleFrom(backgroundColor: tema.colorScheme.secondary,),
+                ),
+            ],
           ),
         ),
       ),
