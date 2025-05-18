@@ -7,10 +7,12 @@ import 'tarjeta_gasto.dart';
 class ListaGastos extends StatelessWidget {
   final List<Gasto> gastos;
   final VoidCallback actualizadorDeEstado;
+  final GlobalKey claveTutorial;
   const ListaGastos({
     super.key,
     required this.gastos,
     required this.actualizadorDeEstado,
+    required this.claveTutorial,
   });
 
   @override
@@ -26,6 +28,7 @@ class ListaGastos extends StatelessWidget {
             return TarjetaGasto(
               gasto: gastos[index],
               actualizadorDeEstado: actualizadorDeEstado,
+              claveProvista: index == 0 ? claveTutorial : null,
             );
           },
         ),

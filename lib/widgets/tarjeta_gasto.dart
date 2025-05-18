@@ -3,27 +3,29 @@ import 'package:flutter/material.dart';
 import '../modelos/gastos.dart';
 import '../servicios/gestion_gastos.dart';
 import '../utilidades/constantes.dart';
-import '../vistas/pantalla_gasto.dart';
+import '../vistas/vista_gasto.dart';
+import '../widgets/notificacion.dart' show notificaExitoEliminacion;
 import 'dialogo_detalle_gasto.dart';
-import 'dialogo_confirmar_eliminacion.dart'; // Ruta hacia el widget de confirmación
+import 'dialogo_confirmar_eliminacion.dart';
 
 class TarjetaGasto extends StatelessWidget {
   final Gasto gasto;
   final VoidCallback actualizadorDeEstado;
+  final GlobalKey? claveProvista;
 
-  // ignore: use_super_parameters
   const TarjetaGasto({
-    Key? key,
+    super.key,
     required this.gasto,
     required this.actualizadorDeEstado,
-  }) : super(key: key);
+    this.claveProvista,
+  });
 
   @override
   Widget build(BuildContext context) {
     final tema = Theme.of(context);
 
     return Dismissible(
-      key: UniqueKey(),
+      key: claveProvista ?? UniqueKey(),
       direction:
           DismissDirection.startToEnd, // Permite deslizar hacia la derecha
       background: Container(
@@ -46,6 +48,7 @@ class TarjetaGasto extends StatelessWidget {
       onDismissed: (direction) {
         GestorGastos().eliminarGasto(gasto.id!);
         actualizadorDeEstado();
+        notificaExitoEliminacion(context);
       },
       child: GestureDetector(
         onTap: () {
@@ -64,7 +67,7 @@ class TarjetaGasto extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder:
-                  (context) => PantallaGasto(
+                  (context) => VistaGasto(
                     gasto: gasto,
                     actualizadorDeEstado: actualizadorDeEstado,
                   ),

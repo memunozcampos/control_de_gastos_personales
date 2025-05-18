@@ -1,6 +1,8 @@
+import 'package:control_de_gastos_personales/utilidades/funciones_utiles.dart'
+    show formatearFecha, formatearValorMonetario;
 import 'package:flutter/material.dart';
 import '../modelos/gastos.dart';
-import '../vistas/pantalla_gasto.dart';
+import '../vistas/vista_gasto.dart';
 
 class DetalleGasto extends StatelessWidget {
   final Gasto gasto;
@@ -14,9 +16,7 @@ class DetalleGasto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Formateo de la fecha en formato dd-mm-yyyy.
-    String formattedDate =
-        "${gasto.fecha.day.toString().padLeft(2, '0')}-${gasto.fecha.month.toString().padLeft(2, '0')}-${gasto.fecha.year}";
+    String formattedDate = formatearFecha(gasto.fecha);
 
     return AlertDialog(
       title: const Text("Detalles del Gasto"),
@@ -108,7 +108,7 @@ class DetalleGasto extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Text("\$${gasto.monto.toStringAsFixed(2)}"),
+                  child: Text(formatearValorMonetario(gasto.monto)),
                 ),
               ],
             ),
@@ -127,7 +127,7 @@ class DetalleGasto extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder:
-                    (context) => PantallaGasto(
+                    (context) => VistaGasto(
                       gasto: gasto,
                       actualizadorDeEstado: actualizadorDeEstado,
                     ),

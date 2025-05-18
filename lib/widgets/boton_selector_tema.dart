@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../temas/gestion_temas.dart';
 
-class IconoSelectorTema extends StatelessWidget {
-  const IconoSelectorTema({super.key});
+class BotonSelectorTema extends StatelessWidget {
+  final GlobalKey? claveCambiarTema;
+
+  const BotonSelectorTema({super.key, this.claveCambiarTema});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<GestorTemaAplicacion>(
       builder: (context, gestorTema, child) {
         return IconButton(
+          key: claveCambiarTema ?? const Key('botonSelectorTema'),
+          tooltip: 'Cambiar tema',
           icon: Consumer<GestorTemaAplicacion>(
             builder: (context, gestorTema, _) {
               final usaModoOscuro =

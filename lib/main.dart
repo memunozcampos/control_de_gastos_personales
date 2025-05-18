@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:provider/provider.dart';
-import 'vistas/pantalla_inicio.dart';
+import 'vistas/vista_inicio.dart';
 import 'temas/modo_claro.dart';
 import 'temas/modo_oscuro.dart';
 import 'temas/gestion_temas.dart';
 // Importa la funcion que genera datos de ejemplo
-//import '/utilidades/gastos_de_ejemplo.dart';
+import '/utilidades/gastos_de_ejemplo.dart' show inicializarDatosDeEjemplo;
 
 void main() async {
   sqfliteFfiInit();
@@ -17,7 +17,8 @@ void main() async {
   final proveedorDeTema = GestorTemaAplicacion();
   await proveedorDeTema.cargarTema();
 
-  //await insertarDatosFicticios(); // Inserta datos ficticios al iniciar la app
+  await inicializarDatosDeEjemplo(); // Inserta datos ficticios al iniciar la app
+
   runApp(
     ChangeNotifierProvider.value(value: proveedorDeTema, child: const MyApp()),
   );
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           theme: temaDeAplicacion,
           darkTheme: temaOscuroDeAplicacion,
           themeMode: proveedorDeTema.modoDeTema,
-          home: const PantallaInicio(),
+          home: const VistaInicio(),
         );
       },
     );

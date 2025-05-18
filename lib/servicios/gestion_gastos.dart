@@ -44,4 +44,9 @@ class GestorGastos {
     );
     return numeroDeFilasAfectadas;
   }
+
+  Future<void> eliminarTodosLosGastos() async {
+    final Database bd = await _gestorBD.bd;
+    await bd.delete('gastos');
+  }
 }

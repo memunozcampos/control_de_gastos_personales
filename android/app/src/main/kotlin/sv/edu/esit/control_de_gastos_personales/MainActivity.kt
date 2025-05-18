@@ -1,4 +1,4 @@
-package com.example.control_de_gastos_personales
+package sv.edu.esit.control_de_gastos_personales
 
 import io.flutter.embedding.android.FlutterActivity
 

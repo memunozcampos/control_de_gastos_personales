@@ -6,23 +6,22 @@ import '../servicios/gestion_gastos.dart';
 import '../utilidades/constantes.dart';
 import '../utilidades/validadores.dart';
 import '../widgets/dialogo_confirmar_eliminacion.dart';
-import '../widgets/icono_selector_tema.dart';
+import '../widgets/notificacion.dart';
+import '../widgets/boton_selector_tema.dart';
+import '../utilidades/funciones_utiles.dart' show formatearFecha;
 
-class PantallaGasto extends StatefulWidget {
+class VistaGasto extends StatefulWidget {
   final Gasto? gasto;
   final Function actualizadorDeEstado;
 
-  const PantallaGasto({
-    Key? key,
-    this.gasto,
-    required this.actualizadorDeEstado,
-  }) : super(key: key);
+  const VistaGasto({Key? key, this.gasto, required this.actualizadorDeEstado})
+    : super(key: key);
 
   @override
-  _EstadoPantallaGasto createState() => _EstadoPantallaGasto();
+  _EstadoVistaGasto createState() => _EstadoVistaGasto();
 }
 
-class _EstadoPantallaGasto extends State<PantallaGasto> {
+class _EstadoVistaGasto extends State<VistaGasto> {
   final _formKey = GlobalKey<FormState>();
   final _descripcionController = TextEditingController();
   final _montoController = TextEditingController();
@@ -74,15 +73,7 @@ class _EstadoPantallaGasto extends State<PantallaGasto> {
           fecha: _fechaSeleccionada!,
         );
         await GestorGastos().insertarGasto(nuevoGasto);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Gasto agregado con éxito',
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
+        notificaExitoAgregacion(context);
       } else {
         final gastoActualizado = Gasto(
           id: widget.gasto!.id,
@@ -92,38 +83,20 @@ class _EstadoPantallaGasto extends State<PantallaGasto> {
           fecha: _fechaSeleccionada!,
         );
         await GestorGastos().actualizarGasto(gastoActualizado);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Gasto actualizado con éxito',
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
+        notificaExitoActualizacion(context);
       }
       widget.actualizadorDeEstado();
       Navigator.pop(context);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'No se pudo guardar el gasto. Verifica los campos.',
-            style: TextStyle(color: Theme.of(context).colorScheme.onError),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
+      notificaErrorAgregacion(context);
     }
   }
 
   Future<void> _eliminarGasto() async {
-    // El DialogoConfirmacion debería heredar estilos del dialogTheme
     final confirmaEliminacion = await showDialog<bool>(
       context: context,
       builder:
           (context) => DialogoConfirmacion(
-            // Asumiendo que DialogoConfirmacion usa botones que heredan el tema
             titulo: 'Confirmar Eliminación',
             mensaje: '¿Estás seguro de eliminar este gasto?',
           ),
@@ -132,17 +105,9 @@ class _EstadoPantallaGasto extends State<PantallaGasto> {
         widget.gasto != null &&
         widget.gasto!.id != null) {
       await GestorGastos().eliminarGasto(widget.gasto!.id!);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Gasto eliminado',
-            style: TextStyle(color: Theme.of(context).colorScheme.onError),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
-      widget.actualizadorDeEstado(); // Llama para actualizar la lista
-      Navigator.pop(context); // Regresa a la pantalla anterior
+      notificaExitoEliminacion(context);
+      widget.actualizadorDeEstado();
+      Navigator.pop(context);
     }
   }
 
@@ -153,9 +118,7 @@ class _EstadoPantallaGasto extends State<PantallaGasto> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.gasto == null ? 'Agregar Gasto' : 'Editar Gasto'),
-        actions: [
-          IconoSelectorTema(), // Icono para cambiar el tema
-        ],
+        actions: [BotonSelectorTema()],
       ),
       body: Form(
         key: _formKey,
@@ -230,7 +193,7 @@ class _EstadoPantallaGasto extends State<PantallaGasto> {
                 controller: TextEditingController(
                   text:
                       _fechaSeleccionada != null
-                          ? "${_fechaSeleccionada!.day}/${_fechaSeleccionada!.month}/${_fechaSeleccionada!.year}" // Formato dd/MM/yyyy
+                          ? formatearFecha(_fechaSeleccionada!)
                           : '',
                 ),
                 validator: (_) => validarFecha(_fechaSeleccionada),

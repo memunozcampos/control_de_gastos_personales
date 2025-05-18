@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../modelos/gastos.dart';
-import '../vistas/pantalla_estadisticas.dart';
+import '../utilidades/funciones_utiles.dart'
+    show acumuladorGastos, formatearValorMonetario;
+import '../vistas/vista_estadisticas.dart';
 
 class ResumenDeGastos extends StatelessWidget {
   final List<Gasto> gastos;
@@ -11,18 +13,15 @@ class ResumenDeGastos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final esquemaColores = Theme.of(context).colorScheme;
+    final esquemaTexto = Theme.of(context).textTheme;
 
-    final double gastosTotales = gastos.fold(
-      0.0,
-      (sum, gasto) => sum + gasto.monto,
-    );
+    final double gastosTotales = gastos.fold(0.0, acumuladorGastos);
     final gastosMesActual =
         gastos.where((gasto) => gasto.fecha.month == mesActual).toList();
     final double gastosMesActualTotal = gastosMesActual.fold(
       0.0,
-      (sum, gasto) => sum + gasto.monto,
+      acumuladorGastos,
     );
     final double gastoPromedioPorDia =
         diasDelMesActual > 0 ? gastosMesActualTotal / diasDelMesActual : 0.0;
@@ -32,12 +31,7 @@ class ResumenDeGastos extends StatelessWidget {
           () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder:
-                  (context) => PantallaEstadisticas(
-                    gastosTotales: gastosTotales,
-                    gastosMesActualTotal: gastosMesActualTotal,
-                    gastoPromedioPorDia: gastoPromedioPorDia,
-                  ),
+              builder: (context) => VistaEstadisticas(gastos: gastos),
             ),
           ),
       borderRadius: BorderRadius.circular(12),
@@ -45,11 +39,11 @@ class ResumenDeGastos extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest,
+          color: esquemaColores.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: colorScheme.shadow.withAlpha(
+              color: esquemaColores.shadow.withAlpha(
                 Theme.of(context).brightness == Brightness.light ? 0x1F : 0x3D,
               ),
               blurRadius: 4,
@@ -66,28 +60,28 @@ class ResumenDeGastos extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
                     'Resumen',
-                    style: textTheme.headlineSmall?.copyWith(
-                      color: colorScheme.primary,
+                    style: esquemaTexto.headlineSmall?.copyWith(
+                      color: esquemaColores.primary,
                     ),
                   ),
                 ),
                 const SizedBox(),
               ],
             ),
-            _buildTableRow(
+            _construirFila(
               context: context,
-              label: 'Total del Mes',
-              value: gastosMesActualTotal,
+              datoResumen: 'Total del Mes',
+              valor: gastosMesActualTotal,
             ),
-            _buildTableRow(
+            _construirFila(
               context: context,
-              label: 'Promedio Diario',
-              value: gastoPromedioPorDia,
+              datoResumen: 'Promedio Diario (en $diasDelMesActual días)',
+              valor: gastoPromedioPorDia,
             ),
-            _buildTableRow(
+            _construirFila(
               context: context,
-              label: 'Total General',
-              value: gastosTotales,
+              datoResumen: 'Total General',
+              valor: gastosTotales,
             ),
           ],
         ),
@@ -95,12 +89,12 @@ class ResumenDeGastos extends StatelessWidget {
     );
   }
 
-  TableRow _buildTableRow({
+  TableRow _construirFila({
     required BuildContext context,
-    required String label,
-    required double value,
+    required String datoResumen,
+    required double valor,
   }) {
-    final textTheme = Theme.of(context).textTheme;
+    final esquemaTexto = Theme.of(context).textTheme;
 
     return TableRow(
       decoration: BoxDecoration(
@@ -110,15 +104,17 @@ class ResumenDeGastos extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Text(
-            label,
-            style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+            datoResumen,
+            style: esquemaTexto.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Text(
-            '\$${value.toStringAsFixed(2)}',
-            style: textTheme.bodyMedium?.copyWith(
+            formatearValorMonetario(valor),
+            style: esquemaTexto.bodyMedium?.copyWith(
               fontFeatures: [const FontFeature.tabularFigures()],
             ),
             textAlign: TextAlign.end,

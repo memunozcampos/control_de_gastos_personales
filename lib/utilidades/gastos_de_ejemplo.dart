@@ -1,31 +1,47 @@
-import '/modelos/gastos.dart';
-import '/servicios/gestion_gastos.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/services.dart';
 
-// Función para agregar gastos de prueba
-Future<void> insertarDatosFicticios() async {
-  final gestor = GestorGastos();
-  final List<Gasto> gastos = [
-    Gasto(
-      descripcion: "Cena en restaurante medio de luxe",
-      categoria: "Alimentación",
-      monto: 45.75,
-      fecha: DateTime(2023, 10, 20),
-    ),
-    Gasto(
-      descripcion: "Gasolina para ir al trabajo",
-      categoria: "Transporte",
-      monto: 30.00,
-      fecha: DateTime(2023, 10, 21),
-    ),
-    Gasto(
-      descripcion: "Gasolina para ir a la playa",
-      categoria: "Transporte",
-      monto: 15.00,
-      fecha: DateTime(2023, 10, 26),
-    ),
-  ];
+import '../modelos/gastos.dart' show Gasto;
+import '../servicios/gestion_gastos.dart' show GestorGastos;
 
-  for (var gasto in gastos) {
-    await gestor.insertarGasto(gasto);
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> inicializarDatosDeEjemplo() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  const String clavePrimerUsoDatos = 'primerUsoDatos';
+
+  bool esPrimerUsoDatos = prefs.getBool(clavePrimerUsoDatos) ?? true;
+
+  if (esPrimerUsoDatos) {
+    await cargarDatosDeEjemplo();
+    await prefs.setBool(clavePrimerUsoDatos, false);
+  } else {
+    debugPrint(
+      "No es la primera vez que se abre la app. No se cargan datos de ejemplo.",
+    );
+  }
+}
+
+Future<void> cargarDatosDeEjemplo() async {
+  try {
+    final String cadenaJson = await rootBundle.loadString(
+      'assets/datos_ejemplo/gastos.json',
+    );
+
+    final List<dynamic> datosJson = json.decode(cadenaJson);
+
+    for (final item in datosJson) {
+      final gasto = Gasto(
+        categoria: item['categoria'],
+        descripcion: item['descripcion'],
+        fecha: DateTime.parse(item['fecha']),
+        monto: (item['monto'] as num).toDouble(),
+      );
+      await GestorGastos().insertarGasto(gasto);
+    }
+    debugPrint('Datos de ejemplo cargados exitosamente.');
+  } catch (e) {
+    debugPrint('Error al cargar los datos de ejemplo: $e');
   }
 }

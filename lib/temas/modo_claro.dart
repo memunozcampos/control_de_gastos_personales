@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 const Color darkPrimaryColor = Color(0xFF388E3C);
 const Color lightPrimaryColor = Color(0xFFC8E6C9);
 const Color primaryColor = Color(0xFF4CAF50);
-const Color textIconsColor = Color(
-  0xFFFFFFFF,
-); // Color para texto/iconos sobre fondos primarios
+const Color textIconsColor = Color(0xFFFFFFFF);
+
+// Color para texto/iconos sobre fondos primarios
 const Color accentColor = Color(0xFFFFC107);
 const Color primaryTextColor = Color(0xFF212121);
 const Color secondaryTextColor = Color(0xFF757575);

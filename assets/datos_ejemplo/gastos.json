@@ -1,0 +1,398 @@
+[
+  {
+    "categoria": "Vivienda",
+    "descripcion": "Pago de vivienda",
+    "fecha": "2025-02-27 12:00:00",
+    "monto": 250.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-02-03 12:00:00",
+    "monto": 75.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-02-04 12:00:00",
+    "monto": 30.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-02-10 12:00:00",
+    "monto": 78.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-02-11 12:00:00",
+    "monto": 27.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-02-17 12:00:00",
+    "monto": 73.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-02-18 12:00:00",
+    "monto": 33.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-02-24 12:00:00",
+    "monto": 77.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-02-25 12:00:00",
+    "monto": 26.0
+  },
+  {
+    "categoria": "Educación",
+    "descripcion": "Colegiatura hijo",
+    "fecha": "2025-02-05 12:00:00",
+    "monto": 50.0
+  },
+  {
+    "categoria": "Ropa",
+    "descripcion": "Compra de ropa",
+    "fecha": "2025-02-15 12:00:00",
+    "monto": 45.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de agua",
+    "fecha": "2025-02-26 12:00:00",
+    "monto": 10.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de electricidad",
+    "fecha": "2025-02-27 12:30:00",
+    "monto": 40.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de internet",
+    "fecha": "2025-02-28 12:00:00",
+    "monto": 50.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Salida al cine",
+    "fecha": "2025-02-12 20:00:00",
+    "monto": 20.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Cena con amigos",
+    "fecha": "2025-02-20 21:00:00",
+    "monto": 30.0
+  },
+  {
+    "categoria": "Otros",
+    "descripcion": "Compra impulsiva",
+    "fecha": "2025-02-14 14:00:00",
+    "monto": 15.0
+  },
+  {
+    "categoria": "Salud",
+    "descripcion": "Consulta médica",
+    "fecha": "2025-02-08 10:00:00",
+    "monto": 30.0
+  },
+  {
+    "categoria": "Vivienda",
+    "descripcion": "Pago de vivienda",
+    "fecha": "2025-03-28 12:00:00",
+    "monto": 250.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-03-03 12:00:00",
+    "monto": 76.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-03-04 12:00:00",
+    "monto": 29.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-03-10 12:00:00",
+    "monto": 74.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-03-11 12:00:00",
+    "monto": 31.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-03-17 12:00:00",
+    "monto": 77.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-03-18 12:00:00",
+    "monto": 28.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-03-24 12:00:00",
+    "monto": 75.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-03-25 12:00:00",
+    "monto": 33.0
+  },
+  {
+    "categoria": "Educación",
+    "descripcion": "Colegiatura hijo",
+    "fecha": "2025-03-05 12:00:00",
+    "monto": 50.0
+  },
+  {
+    "categoria": "Educación",
+    "descripcion": "Compra de libro escolar",
+    "fecha": "2025-03-15 12:00:00",
+    "monto": 12.0
+  },
+  {
+    "categoria": "Ropa",
+    "descripcion": "Compra de ropa",
+    "fecha": "2025-03-20 12:00:00",
+    "monto": 60.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de agua",
+    "fecha": "2025-03-26 12:00:00",
+    "monto": 12.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de electricidad",
+    "fecha": "2025-03-27 12:00:00",
+    "monto": 35.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de internet",
+    "fecha": "2025-03-28 13:00:00",
+    "monto": 50.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Salida al cine",
+    "fecha": "2025-03-08 20:00:00",
+    "monto": 25.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Cena en restaurante",
+    "fecha": "2025-03-16 20:30:00",
+    "monto": 40.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Bar con amigos",
+    "fecha": "2025-03-22 21:00:00",
+    "monto": 20.0
+  },
+  {
+    "categoria": "Otros",
+    "descripcion": "Compra impulsiva",
+    "fecha": "2025-03-12 15:00:00",
+    "monto": 18.0
+  },
+  {
+    "categoria": "Salud",
+    "descripcion": "Compra de medicamentos",
+    "fecha": "2025-03-14 09:00:00",
+    "monto": 35.0
+  },
+  {
+    "categoria": "Vivienda",
+    "descripcion": "Pago de vivienda",
+    "fecha": "2025-04-26 12:00:00",
+    "monto": 250.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-04-02 12:00:00",
+    "monto": 78.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-04-03 12:00:00",
+    "monto": 32.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-04-09 12:00:00",
+    "monto": 72.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-04-10 12:00:00",
+    "monto": 27.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-04-16 12:00:00",
+    "monto": 76.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-04-17 12:00:00",
+    "monto": 30.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-04-23 12:00:00",
+    "monto": 73.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-04-24 12:00:00",
+    "monto": 26.0
+  },
+  {
+    "categoria": "Educación",
+    "descripcion": "Colegiatura hijo",
+    "fecha": "2025-04-05 12:00:00",
+    "monto": 50.0
+  },
+  {
+    "categoria": "Ropa",
+    "descripcion": "Compra de ropa",
+    "fecha": "2025-04-12 12:00:00",
+    "monto": 85.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de agua",
+    "fecha": "2025-04-27 12:00:00",
+    "monto": 9.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de electricidad",
+    "fecha": "2025-04-28 12:00:00",
+    "monto": 38.0
+  },
+  {
+    "categoria": "Facturas",
+    "descripcion": "Factura de internet",
+    "fecha": "2025-04-29 12:00:00",
+    "monto": 50.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Salida al teatro",
+    "fecha": "2025-04-15 20:00:00",
+    "monto": 28.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Noche de bolos",
+    "fecha": "2025-04-20 21:00:00",
+    "monto": 22.0
+  },
+  {
+    "categoria": "Otros",
+    "descripcion": "Donación caritativa",
+    "fecha": "2025-04-18 16:00:00",
+    "monto": 20.0
+  },
+  {
+    "categoria": "Salud",
+    "descripcion": "Consulta médica",
+    "fecha": "2025-04-11 10:00:00",
+    "monto": 40.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-05-03 12:00:00",
+    "monto": 74.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-05-04 12:00:00",
+    "monto": 29.0
+  },
+  {
+    "categoria": "Alimentación",
+    "descripcion": "Compra de comida semanal",
+    "fecha": "2025-05-10 12:00:00",
+    "monto": 77.0
+  },
+  {
+    "categoria": "Transporte",
+    "descripcion": "Llenado de combustible",
+    "fecha": "2025-05-11 12:00:00",
+    "monto": 32.0
+  },
+  {
+    "categoria": "Educación",
+    "descripcion": "Colegiatura hijo",
+    "fecha": "2025-05-02 12:00:00",
+    "monto": 50.0
+  },
+  {
+    "categoria": "Ropa",
+    "descripcion": "Compra de ropa",
+    "fecha": "2025-05-09 12:00:00",
+    "monto": 40.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Salida al cine",
+    "fecha": "2025-05-07 20:00:00",
+    "monto": 30.0
+  },
+  {
+    "categoria": "Entretenimiento",
+    "descripcion": "Cena en restaurante",
+    "fecha": "2025-05-15 21:00:00",
+    "monto": 25.0
+  },
+  {
+    "categoria": "Otros",
+    "descripcion": "Compra impulsiva",
+    "fecha": "2025-05-13 14:00:00",
+    "monto": 20.0
+  },
+  {
+    "categoria": "Salud",
+    "descripcion": "Consulta médica",
+    "fecha": "2025-05-05 10:30:00",
+    "monto": 25.0
+  }
+]
