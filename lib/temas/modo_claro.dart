@@ -46,9 +46,6 @@ final ThemeData temaDeAplicacion = ThemeData(
   // Define una variante más clara del color primario
   primaryColorLight: lightPrimaryColor,
 
-  // Define el color de los indicadores de progreso
-  indicatorColor: accentColor,
-
   // Define el color de los divisores
   dividerColor: dividerColor,
 
@@ -182,7 +179,7 @@ final ThemeData temaDeAplicacion = ThemeData(
   ),
 
   // Define el tema para las tarjetas (Card)
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     elevation: 2.0,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     margin: const EdgeInsets.all(8.0),
@@ -195,7 +192,7 @@ final ThemeData temaDeAplicacion = ThemeData(
   ),
 
   // Define el tema para diálogos
-  dialogTheme: DialogTheme(
+  dialogTheme: DialogThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
   ),
 
@@ -209,7 +206,7 @@ final ThemeData temaDeAplicacion = ThemeData(
   ),
 
   // Define el tema para TabBar
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: const TabBarThemeData(
     labelColor: primaryColor,
     unselectedLabelColor: secondaryTextColor,
     indicatorColor: primaryColor,
