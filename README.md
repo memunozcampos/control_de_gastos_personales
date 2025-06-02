@@ -6,7 +6,7 @@
 
 ## **Acerca del Proyecto**
 
-Este repositorio contiene el código fuente de una aplicación móvil desarrollada para la tarea de la asignatura Desarrollo de Aplicaciones Móviles. El proyecto está concebido como un *proyecto en flutter*, enfocado en permitir el control o registro de gastos personales (inferido del nombre del repositorio `control_de_gastos_personales`).
+Este repositorio contiene el código fuente de una aplicación móvil desarrollada para la tarea de la asignatura Desarrollo de Aplicaciones Móviles. El proyecto está concebido como un *proyecto en flutter*, enfocado en permitir el control o registro de gastos personales.
 
 ## **Tecnología**
 
@@ -33,3 +33,4 @@ Hay una primera release del proyecto:
 ## **Licencia**
 
 Este proyecto se encuentra bajo la **Licencia MIT**.
+

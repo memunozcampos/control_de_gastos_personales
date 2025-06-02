@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -29,9 +27,9 @@ class GraficoGastosPorCategoria extends StatelessWidget {
           ..sort((a, b) => a.value.compareTo(b.value));
 
     double valorMaxY = 0;
-    categoriasOrdenadas.forEach((entrada) {
+    for (var entrada in categoriasOrdenadas) {
       if (entrada.value > valorMaxY) valorMaxY = entrada.value;
-    });
+    }
     valorMaxY = (valorMaxY * 1.25).ceilToDouble();
 
     int i = 0;

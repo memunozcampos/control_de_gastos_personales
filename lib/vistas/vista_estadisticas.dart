@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_function_literals_in_foreach_calls
-
 import 'package:control_de_gastos_personales/widgets/tarjeta_tendencias_semanales.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -22,7 +20,7 @@ class VistaEstadisticas extends StatefulWidget {
   const VistaEstadisticas({super.key, required this.gastos});
 
   @override
-  _EstadoVistaEstadisticas createState() => _EstadoVistaEstadisticas();
+  State<VistaEstadisticas> createState() => _EstadoVistaEstadisticas();
 }
 
 class _EstadoVistaEstadisticas extends State<VistaEstadisticas> {
@@ -48,6 +46,11 @@ class _EstadoVistaEstadisticas extends State<VistaEstadisticas> {
     initializeDateFormatting();
 
     _cargarYCalcularEstadisticas();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> _cargarYCalcularEstadisticas() async {
