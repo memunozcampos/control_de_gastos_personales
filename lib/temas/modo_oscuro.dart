@@ -37,7 +37,6 @@ final ThemeData temaOscuroDeAplicacion = ThemeData(
   primaryColor: primaryColor,
   primaryColorDark: darkPrimaryColor,
   primaryColorLight: lightPrimaryColor,
-  indicatorColor: accentColor,
   dividerColor: dividerColor,
   scaffoldBackgroundColor: Colors.grey[850]!,
 
@@ -117,7 +116,7 @@ final ThemeData temaOscuroDeAplicacion = ThemeData(
     hintStyle: const TextStyle(color: secondaryTextColor),
   ),
 
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     elevation: 2.0,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     margin: const EdgeInsets.all(8.0),
@@ -137,7 +136,7 @@ final ThemeData temaOscuroDeAplicacion = ThemeData(
     selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
   ),
 
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: const TabBarThemeData(
     labelColor: primaryColor,
     unselectedLabelColor: secondaryTextColor,
     indicatorColor: primaryColor,
