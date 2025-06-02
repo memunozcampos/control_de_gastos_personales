@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -16,7 +14,7 @@ class VistaInicio extends StatefulWidget {
   const VistaInicio({super.key});
 
   @override
-  _EstadoVistaInicio createState() => _EstadoVistaInicio();
+  State<VistaInicio> createState() => _EstadoVistaInicio();
 }
 
 class _EstadoVistaInicio extends State<VistaInicio> {
@@ -46,6 +44,11 @@ class _EstadoVistaInicio extends State<VistaInicio> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> _mostrarTutorialSiEsPrimerUso() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const String clavePrimerUsoTutorial = 'primerUsoTutorial';
@@ -66,6 +69,7 @@ class _EstadoVistaInicio extends State<VistaInicio> {
           debugPrint("Tutorial finalizado");
         },
       );
+      if (!mounted) return;
       _tutorialCoachMark!.show(context: context);
     }
   }

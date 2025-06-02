@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, use_super_parameters
-
 import 'package:flutter/material.dart';
 import '../modelos/gastos.dart';
 import '../servicios/gestion_gastos.dart';
@@ -14,11 +12,10 @@ class VistaGasto extends StatefulWidget {
   final Gasto? gasto;
   final Function actualizadorDeEstado;
 
-  const VistaGasto({Key? key, this.gasto, required this.actualizadorDeEstado})
-    : super(key: key);
+  const VistaGasto({super.key, this.gasto, required this.actualizadorDeEstado});
 
   @override
-  _EstadoVistaGasto createState() => _EstadoVistaGasto();
+  State<VistaGasto> createState() => _EstadoVistaGasto();
 }
 
 class _EstadoVistaGasto extends State<VistaGasto> {
@@ -73,6 +70,7 @@ class _EstadoVistaGasto extends State<VistaGasto> {
           fecha: _fechaSeleccionada!,
         );
         await GestorGastos().insertarGasto(nuevoGasto);
+        if (!mounted) return;
         notificaExitoAgregacion(context);
       } else {
         final gastoActualizado = Gasto(
@@ -83,6 +81,7 @@ class _EstadoVistaGasto extends State<VistaGasto> {
           fecha: _fechaSeleccionada!,
         );
         await GestorGastos().actualizarGasto(gastoActualizado);
+        if (!mounted) return;
         notificaExitoActualizacion(context);
       }
       widget.actualizadorDeEstado();
@@ -105,6 +104,7 @@ class _EstadoVistaGasto extends State<VistaGasto> {
         widget.gasto != null &&
         widget.gasto!.id != null) {
       await GestorGastos().eliminarGasto(widget.gasto!.id!);
+      if (!mounted) return;
       notificaExitoEliminacion(context);
       widget.actualizadorDeEstado();
       Navigator.pop(context);

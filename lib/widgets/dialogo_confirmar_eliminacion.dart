@@ -5,12 +5,11 @@ class DialogoConfirmacion extends StatelessWidget {
   final String titulo;
   final String mensaje;
 
-  // ignore: use_super_parameters
   const DialogoConfirmacion({
-    Key? key,
+    super.key,
     required this.titulo,
     required this.mensaje,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
