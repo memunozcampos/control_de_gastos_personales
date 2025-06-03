@@ -31,6 +31,7 @@ class _EstadoVistaInicio extends State<VistaInicio> {
 
   final List<TargetFocus> _objetivos = [];
   TutorialCoachMark? _tutorialCoachMark;
+  bool _esPrimerUso = true;
 
   @override
   void initState() {
@@ -53,6 +54,7 @@ class _EstadoVistaInicio extends State<VistaInicio> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const String clavePrimerUsoTutorial = 'primerUsoTutorial';
     bool esPrimerUso = prefs.getBool(clavePrimerUsoTutorial) ?? true;
+    _esPrimerUso = esPrimerUso;
 
     if (esPrimerUso) {
       _definirObjetivosTutorial();
@@ -63,6 +65,9 @@ class _EstadoVistaInicio extends State<VistaInicio> {
         hideSkip: true,
         onClickTarget: (target) async {
           debugPrint("Tocaste el objetivo: ${target.identify}");
+          debugPrint(
+            "Este objetivo tiene clave: ${target.keyTarget.toString()}",
+          );
         },
         onFinish: () async {
           await prefs.setBool(clavePrimerUsoTutorial, false);
@@ -263,6 +268,9 @@ Toca el resumen para ver más estadísticas sobre tus gastos.''',
               onTap: () {
                 // Navegar a VistaEstadisticas (asegúrate de definir la ruta o implementarlo)
                 Navigator.pushNamed(context, '/vistaEstadisticas');
+                debugPrint(
+                  "Navegando a VistaEstadisticas con clave: $_claveVistaResumen",
+                );
               },
               child: ResumenDeGastos(gastos: _gastos),
             ),
@@ -278,7 +286,7 @@ Toca el resumen para ver más estadísticas sobre tus gastos.''',
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        key: _claveVistaGasto,
+        key: _esPrimerUso ? _claveVistaGasto : UniqueKey(),
         tooltip: 'Agregar nuevo gasto',
         onPressed: () async {
           await Navigator.push(
