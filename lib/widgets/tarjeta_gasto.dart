@@ -23,9 +23,13 @@ class TarjetaGasto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tema = Theme.of(context);
+    final clave = claveProvista ?? UniqueKey();
+    debugPrint(
+      'Construyendo tarjeta de gasto: ${gasto.descripcion} con clave: $clave',
+    );
 
     return Dismissible(
-      key: claveProvista ?? UniqueKey(),
+      key: clave,
       direction:
           DismissDirection.startToEnd, // Permite deslizar hacia la derecha
       background: Container(
